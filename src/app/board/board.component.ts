@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-board',
@@ -7,14 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
   grid : object[][];
+  dimX : number = 30;
+  dimY : number = 15;
+  minesCount : number = 45;
 
-  constructor() { 
-    this.prepareBoard(30, 60);
+  constructor() {}
+
+  ngOnInit(): void {
+    this.prepareBoard(this.dimX, this.dimY, this.minesCount);
   }
 
   neighbours(x: number, y: number) {
     const neighbours : Array<object> = [];
-    const dim = this.grid.length;
+    const dimY = this.grid.length;
+    const dimX = this.grid[0].length;
 
     if (x > 0 && y > 0) {
       neighbours.push({y: y - 1, x: x - 1, diag: true});
@@ -25,31 +31,31 @@ export class BoardComponent implements OnInit {
     if (y > 0) {
       neighbours.push({y: y - 1, x: x, diag: false});
     }
-    if (x > 0 && y < dim - 1) {
+    if (x > 0 && y < dimY - 1) {
       neighbours.push({y: y + 1, x: x - 1, diag: true});
     }
-    if (y > 0 && x < dim - 1) {
+    if (y > 0 && x < dimX - 1) {
       neighbours.push({y: y - 1, x: x + 1, diag: true});
     }
-    if (y < dim - 1) {
+    if (y < dimY - 1) {
       neighbours.push({y: y + 1, x: x, diag: false});
     }
-    if (x < dim - 1) {
+    if (x < dimX - 1) {
       neighbours.push({y: y, x: x + 1, diag: false});
     }
-    if (y < dim - 1 && x < dim - 1) {
+    if (y < dimY - 1 && x < dimX - 1) {
       neighbours.push({y: y + 1, x: x + 1, diag: true});
     }
 
     return neighbours;
   }
 
-  prepareBoard(dim : number, minesCount : number) {
+  prepareBoard(dimX : number, dimY : number, minesCount : number) {
     this.grid = [];
 
-    for (let y = 0; y < dim; y++) {
+    for (let y = 0; y < dimY; y++) {
       this.grid[y] = [];
-      for (let x = 0; x < dim; x++) {  
+      for (let x = 0; x < dimX; x++) {  
         this.grid[y][x] = { 
           state: 'unrevealed', 
           value: 0,
@@ -59,8 +65,8 @@ export class BoardComponent implements OnInit {
     }
 
     for (let i = 0; i < minesCount + 1; i++) {
-      let x = Math.floor(Math.random() * dim);
-      let y = Math.floor(Math.random() * dim);
+      let x = Math.floor(Math.random() * dimX);
+      let y = Math.floor(Math.random() * dimY);
 
       if (!this.grid[y][x]['mine']) {
         this.grid[y][x]['mine'] = true;
@@ -101,7 +107,7 @@ export class BoardComponent implements OnInit {
           this.unreveal(t['x'], t['y']);
 
           for (let nb of neighbours) {
-            if (this.isUnrevealed(nb['x'], nb['y']) && stack.find(coord => coord['x'] === nb['x'] && coord['y'] === nb['y']) === undefined) {
+            if (this.isUnrevealed(nb['x'], nb['y']) && stack.every(crd => !(crd['x'] === nb['x'] && crd['y'] === nb['y']))) {
               stack.push(nb);
             }
           }
@@ -131,9 +137,6 @@ export class BoardComponent implements OnInit {
     }
 
     return this.grid[y][x]['state'];
-  }
-
-  ngOnInit(): void {
   }
 
   onFieldClick($event) {
