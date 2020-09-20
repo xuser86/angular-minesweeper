@@ -1,0 +1,10 @@
+<div class="field-container" (click)="onClick($event)">
+    <img *ngIf="state === 'mine'" class="mine" src="assets/mine2.svg">
+    <img *ngIf="state === 'blown-mine'" class="blown-mine mine" src="assets/mine2.svg">
+    <div *ngIf="state === 'flag'" class="unrevealed">
+        <img class="flag" src="assets/flag.svg">
+    </div>
+    <div *ngIf="state === 'unrevealed'" class="unrevealed"></div>
+    <div *ngIf="state === 'empty'"></div>
+    <span *ngIf="state === 'number'" class="value" [style.color]="textColor">{{value}}</span>
+</div>

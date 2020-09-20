@@ -1,0 +1,53 @@
+/* convert to rem em */
+
+:host {
+    --base-size: 32px;
+}
+
+.field-container {
+    border: black solid 1px;
+    width: var(--base-size);
+    height: var(--base-size);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    user-select: none;
+}
+
+.mine {
+    width: var(--base-size);
+    height: var(--base-size);
+}
+
+.blown-mine {
+    background: red;
+}
+
+.value {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: calc(var(--base-size) * 0.74);
+    font-weight: bold;
+}
+
+.unrevealed {
+    width: calc(var(--base-size) - 4px);
+    height: calc(var(--base-size) - 4px);
+
+    background: grey;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unrevealed:hover {
+    background: silver;
+}
+
+.flag {
+    width: calc(var(--base-size) * 0.7);
+    height: calc(var(--base-size) * 0.7);
+    filter: invert()
+}

@@ -1,0 +1,16 @@
+<table>
+    <tr *ngFor="let row of grid; let y = index">
+        <td *ngFor="let field of row; let x = index">
+            <app-field 
+                [state]="field.state" 
+                [value]="field.value"
+                [x]="x"
+                [y]="y"
+                (newItemEvent)="onFieldClick($event)"
+            ></app-field>
+        </td>
+    </tr>
+</table>
+<div>
+    <button (click)="unrevealAll()">Reveal All</button>
+</div>
