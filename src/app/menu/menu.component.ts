@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  visible: boolean = true;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onNewGame() : void {
+    this.visible = false;
+  }
 }

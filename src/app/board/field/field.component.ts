@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-field',
@@ -10,7 +10,8 @@ export class FieldComponent implements OnInit {
   @Input() value : number;
   @Input() x : number;
   @Input() y : number;
-  @Output() newItemEvent = new EventEmitter<object>();
+  @Output() clickEvent = new EventEmitter<object>();
+  @Output() rbClickEvent = new EventEmitter<object>();
 
   colours: Array<string> = [
     'blue', 'green', 'red',
@@ -20,7 +21,9 @@ export class FieldComponent implements OnInit {
 
   textColor : string;
 
-  constructor() {}
+  constructor(
+    private _elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     // rainbow
@@ -30,6 +33,12 @@ export class FieldComponent implements OnInit {
   }
 
   onClick($event) {
-    this.newItemEvent.emit({ x: this.x, y: this.y });
+    this.clickEvent.emit({ x: this.x, y: this.y });
+    return false;
   }
+
+  onRBClick($event) {
+    this.rbClickEvent.emit({ x: this.x, y: this.y });
+    return false;
+  }  
 }

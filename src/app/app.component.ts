@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'minesweeper';
+
+  gameOver($event) : void {
+    alert('game win? = ' + $event);
+  }
 }

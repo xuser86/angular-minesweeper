@@ -1,4 +1,4 @@
-<table>
+<table cellpadding="0" cellspacing="1">
     <tr *ngFor="let row of grid; let y = index">
         <td *ngFor="let field of row; let x = index">
             <app-field 
@@ -6,11 +6,12 @@
                 [value]="field.value"
                 [x]="x"
                 [y]="y"
-                (newItemEvent)="onFieldClick($event)"
+                (clickEvent)="onFieldClick($event)"
+                (rbClickEvent)="onFieldRBClick($event)"
             ></app-field>
         </td>
     </tr>
 </table>
-<div>
+<!-- div>
     <button (click)="unrevealAll()">Reveal All</button>
-</div>
+</div -->

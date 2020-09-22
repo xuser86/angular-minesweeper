@@ -1,9 +1,9 @@
 /* convert to rem em */
-
+/*
 :host {
-    --base-size: 32px;
+    --base-size: min(5vh, 2.5vw);
 }
-
+*/
 .field-container {
     border: black solid 1px;
     width: var(--base-size);

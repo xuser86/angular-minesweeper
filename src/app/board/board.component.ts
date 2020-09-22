@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-board',
@@ -10,6 +10,7 @@ export class BoardComponent implements OnInit {
   dimX : number = 30;
   dimY : number = 15;
   minesCount : number = 45;
+  @Output() gameOver = new EventEmitter<boolean>();;
 
   constructor() {}
 
@@ -94,7 +95,15 @@ export class BoardComponent implements OnInit {
   }
 
   isUnrevealed(x: number, y: number) {
-    return this.grid[y][x]['state'] === 'unrevealed';
+    return this.grid[y][x]['state'] === 'unrevealed' || this.grid[y][x]['state'] === 'flag';
+  }
+
+  mark(x: number, y: number) : void {
+    if (this.grid[y][x]['state'] === 'unrevealed') {
+      this.grid[y][x]['state'] = 'flag';
+    } else if (this.grid[y][x]['state'] === 'flag') {
+      this.grid[y][x]['state'] = 'unrevealed';
+    }
   }
 
   unrevealChain(x: number, y: number) : void {
@@ -116,7 +125,26 @@ export class BoardComponent implements OnInit {
         }
       }
     } else {
-      this.unreveal(x, y, true);
+      this.checkGameOver(this.unreveal(x, y, true));
+    }
+  }
+
+  checkGameOver(newState = null) {
+    // TODO: fix game over check
+    if (newState === 'blown-mine') {
+      this.gameOver.emit(false); // game lost
+    } else {
+      let reveledCount = 0;
+      for (let y = 0; y < this.grid.length; y++) {
+        for (let x = 0; x < this.grid[y].length; x++) {  
+          if (this.grid[y][x]['mine'] && (this.grid[y][x]['state'] === 'unrevealed' || this.grid[y][x]['state'] === 'flag')) {
+            reveledCount++;
+          }
+        }
+      }
+      if (reveledCount === this.minesCount) {
+        this.gameOver.emit(true); // game win
+      }
     }
   }
 
@@ -141,5 +169,9 @@ export class BoardComponent implements OnInit {
 
   onFieldClick($event) {
     this.unrevealChain($event['x'], $event['y']);
+  }
+
+  onFieldRBClick($event) {
+    this.mark($event['x'], $event['y']);
   }
 }
