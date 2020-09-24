@@ -9,7 +9,7 @@ export class BoardComponent implements OnInit {
   grid : object[][];
   dimX : number = 30;
   dimY : number = 15;
-  minesCount : number = 45;
+  minesCount : number = 20;
   @Output() gameOver = new EventEmitter<boolean>();;
 
   constructor() {}
@@ -65,7 +65,7 @@ export class BoardComponent implements OnInit {
       }
     }
 
-    for (let i = 0; i < minesCount + 1; i++) {
+    for (let i = 0; i < minesCount; i++) {
       let x = Math.floor(Math.random() * dimX);
       let y = Math.floor(Math.random() * dimY);
 
@@ -130,20 +130,24 @@ export class BoardComponent implements OnInit {
   }
 
   checkGameOver(newState = null) {
-    // TODO: fix game over check
     if (newState === 'blown-mine') {
+      this.unrevealAll();
       this.gameOver.emit(false); // game lost
     } else {
-      let reveledCount = 0;
+      let unreveledCount = 0;
       for (let y = 0; y < this.grid.length; y++) {
-        for (let x = 0; x < this.grid[y].length; x++) {  
-          if (this.grid[y][x]['mine'] && (this.grid[y][x]['state'] === 'unrevealed' || this.grid[y][x]['state'] === 'flag')) {
-            reveledCount++;
+        for (let x = 0; x < this.grid[y].length; x++) { 
+          if (this.grid[y][x]['state']=== 'blown-mine') {
+            this.unrevealAll();
+            return this.gameOver.emit(false); // game lost
+          } else if (this.grid[y][x]['state'] === 'unrevealed' || this.grid[y][x]['state'] === 'flag') {
+            unreveledCount++;
           }
         }
       }
-      if (reveledCount === this.minesCount) {
-        this.gameOver.emit(true); // game win
+      if (this.minesCount === unreveledCount) {
+        this.unrevealAll();
+        return this.gameOver.emit(true);
       }
     }
   }
