@@ -12,8 +12,6 @@ export class BoardComponent implements OnInit {
   minesCount : number = 250;
   @Output() gameOver = new EventEmitter<boolean>();
 
-  constructor() {}
-
   ngOnInit(): void {
     this.prepareBoard(this.dimX, this.dimY, this.minesCount);
   }

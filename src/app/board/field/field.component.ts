@@ -21,10 +21,6 @@ export class FieldComponent implements OnInit {
 
   textColor : string;
 
-  constructor(
-    private _elementRef: ElementRef
-  ) {}
-
   ngOnInit(): void {
     // rainbow
     // this.textColor = `hsl(${(this.value-1)*45},100%,50%)`;
