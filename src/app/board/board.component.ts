@@ -7,10 +7,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
   grid : object[][];
-  dimX : number = 30;
-  dimY : number = 15;
-  minesCount : number = 20;
-  @Output() gameOver = new EventEmitter<boolean>();;
+  dimX : number = 70;
+  dimY : number = 40;
+  minesCount : number = 250;
+  @Output() gameOver = new EventEmitter<boolean>();
 
   constructor() {}
 

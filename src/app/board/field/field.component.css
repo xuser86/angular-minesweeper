@@ -5,7 +5,7 @@
 }
 */
 .field-container {
-    border: black solid 1px;
+    border: silver solid 1px;
     width: var(--base-size);
     height: var(--base-size);
 
